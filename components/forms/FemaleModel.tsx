@@ -166,11 +166,11 @@ const BecomeAModelForm = () => {
         <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-3 max-w-screen-lg m-auto">
           {(
             [
-              ["closeUp", "CLOSE-UP", "/img/Female/close-up.jpg"],
-              ["side", "SIDE", "/img/Female/side.jpg"],
-              ["upperBody", "UPPER BODY", "/img/Female/upperbody.jpg"],
-              ["eyes", "EYES", "/img/Female/eyes.jpg"],
-              ["fullLength", "FULL-LENGTH", "/img/Female/full-length.jpg"],
+              ["closeUp", "CLOSE-UP", "/Img/Female/close-up.jpg"],
+              ["side", "SIDE", "/Img/Female/side.jpg"],
+              ["upperBody", "UPPER BODY", "/Img/Female/upperbody.jpg"],
+              ["eyes", "EYES", "/Img/Female/eyes.jpg"],
+              ["fullLength", "FULL-LENGTH", "/Img/Female/full-length.jpg"],
             ] as const
           ).map(([name, label, src]) => (
             <div className="flex flex-col gap-2" key={name}>

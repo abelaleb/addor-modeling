@@ -19,5 +19,5 @@ export const menus = [
     name: "Contact Us",
     path: "/contact-us",
   },
-  { name: "Dashboard", path: "/dashboard" },
+  // { name: "Dashboard", path: "/dashboard" },
 ];

@@ -1,185 +1,216 @@
 "use client"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Search, Menu, MapPin, Phone, Mail, Instagram, Twitter, Facebook } from "lucide-react"
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
 
-export default function ContactPage() {
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Message Sent!",
+      description: "We'll get back to you within 24 hours.",
+    });
+    setFormData({ name: '', email: '', subject: '', message: '' });
+  };
+
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: "Address",
+      details: ["123 Fashion Avenue", "New York, NY 10001", "United States"]
+    },
+    {
+      icon: Phone,
+      title: "Phone",
+      details: ["+1 (555) 123-4567", "+1 (555) 987-6543"]
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      details: ["info@addors.com", "casting@addors.com"]
+    },
+    {
+      icon: Clock,
+      title: "Business Hours",
+      details: ["Monday - Friday: 9:00 AM - 6:00 PM", "Saturday: 10:00 AM - 4:00 PM", "Sunday: Closed"]
+    }
+  ];
+
+  const socialLinks = [
+    { icon: Instagram, label: "Instagram", href: "#" },
+    { icon: Facebook, label: "Facebook", href: "#" },
+    { icon: Twitter, label: "Twitter", href: "#" }
+  ];
+
   return (
-    <div className="min-h-screen bg-black text-white">
-
-      {/* Navigation */}
-      <nav className="flex justify-center py-8">
-        <div className="flex gap-8 text-sm tracking-wider">
-          <Link href="/services" className="hover:text-yellow-400 transition-colors">
-            SERVICES
-          </Link>
-          <Link href="/models" className="hover:text-yellow-400 transition-colors">
-            MODELS
-          </Link>
-          <Link href="/become-a-model" className="hover:text-yellow-400 transition-colors">
-            BECOME A MODEL
-          </Link>
-          <Link href="/magazine" className="hover:text-yellow-400 transition-colors">
-            MAGAZINE
-          </Link>
-          <Link href="/contact" className="text-yellow-400">
-            CONTACT US
-          </Link>
-        </div>
-      </nav>
-
-      <main className="container mx-auto px-6 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-wider">CONTACT US</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Ready to start your modeling journey or collaborate with our agency? Get in touch with us.
+    <div className="min-h-screen pt-20">
+      {/* Header */}
+      <section className="py-16 px-6 bg-secondary/20">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h1 className="heading-lg mb-6">Contact Us</h1>
+          <p className="body-lg text-muted-foreground">
+            Get in touch with ADDORS. We&apos;re here to answer your questions and discuss opportunities.
           </p>
         </div>
+      </section>
 
-        <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
+      <div className="container mx-auto max-w-7xl px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Form */}
           <div>
-            <h2 className="text-3xl font-bold mb-8 text-yellow-400">GET IN TOUCH</h2>
-            <form className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Input
-                    placeholder="First Name"
-                    className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-400"
-                  />
-                </div>
-                <div>
-                  <Input
-                    placeholder="Last Name"
-                    className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-400"
-                  />
-                </div>
-              </div>
+            <Card className="elegant-border">
+              <CardHeader>
+                <CardTitle className="heading-md">Send us a Message</CardTitle>
+                <CardDescription>
+                  Fill out the form below and we&apos;ll get back to you as soon as possible.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <Label htmlFor="name" className="label-elegance">Full Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="elegant-border"
+                      required
+                    />
+                  </div>
 
-              <div>
-                <Input
-                  type="email"
-                  placeholder="Email Address"
-                  className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-400"
-                />
-              </div>
+                  <div>
+                    <Label htmlFor="email" className="label-elegance">Email Address *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="elegant-border"
+                      required
+                    />
+                  </div>
 
-              <div>
-                <Input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-400"
-                />
-              </div>
+                  <div>
+                    <Label htmlFor="subject" className="label-elegance">Subject *</Label>
+                    <Input
+                      id="subject"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="elegant-border"
+                      required
+                    />
+                  </div>
 
-              <div>
-                <Input
-                  placeholder="Subject"
-                  className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-400"
-                />
-              </div>
+                  <div>
+                    <Label htmlFor="message" className="label-elegance">Message *</Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Tell us how we can help you..."
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="elegant-border min-h-[120px]"
+                      required
+                    />
+                  </div>
 
-              <div>
-                <Textarea
-                  placeholder="Your Message"
-                  rows={6}
-                  className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-400 resize-none"
-                />
-              </div>
-
-              <Button className="bg-yellow-400 text-black hover:bg-yellow-500 px-8 py-3 text-lg font-semibold w-full">
-                SEND MESSAGE
-              </Button>
-            </form>
+                  <Button type="submit" size="lg" className="w-full bg-gold hover:bg-gold-dark text-black font-medium">
+                    Send Message
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Contact Information */}
-          <div>
-            <h2 className="text-3xl font-bold mb-8 text-yellow-400">CONTACT INFORMATION</h2>
-
-            <div className="space-y-8">
-              <div className="flex items-start gap-4">
-                <MapPin className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold mb-2">ADDRESS</h3>
-                  <p className="text-gray-300 leading-relaxed">
-                    123 Fashion Avenue
-                    <br />
-                    New York, NY 10001
-                    <br />
-                    United States
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <Phone className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold mb-2">PHONE</h3>
-                  <p className="text-gray-300">+1 (555) 123-4567</p>
-                  <p className="text-gray-300">+1 (555) 987-6543</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <Mail className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold mb-2">EMAIL</h3>
-                  <p className="text-gray-300">info@addor.com</p>
-                  <p className="text-gray-300">casting@addor.com</p>
-                </div>
+          <div className="space-y-8">
+            <div>
+              <h2 className="heading-md mb-8">Get in Touch</h2>
+              <div className="grid grid-cols-1 gap-6">
+                {contactInfo.map((info, index) => (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center">
+                      <info.icon className="w-6 h-6 text-gold-dark" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium mb-2">{info.title}</h3>
+                      {info.details.map((detail, idx) => (
+                        <p key={idx} className="text-muted-foreground text-sm">{detail}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Office Hours */}
-            <div className="mt-12">
-              <h3 className="text-xl font-semibold mb-4 text-yellow-400">OFFICE HOURS</h3>
-              <div className="space-y-2 text-gray-300">
-                <div className="flex justify-between">
-                  <span>Monday - Friday</span>
-                  <span>9:00 AM - 6:00 PM</span>
+            {/* Map Placeholder */}
+            <Card className="elegant-border">
+              <CardContent className="p-0">
+                <div className="aspect-[4/3] bg-muted flex items-center justify-center">
+                  <div className="text-center">
+                    <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">Interactive Map</p>
+                    <p className="text-sm text-muted-foreground">123 Fashion Avenue, New York</p>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span>Saturday</span>
-                  <span>10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>Closed</span>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Social Media */}
-            <div className="mt-12">
-              <h3 className="text-xl font-semibold mb-4 text-yellow-400">FOLLOW US</h3>
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="w-10 h-10 border border-gray-600 rounded-full flex items-center justify-center hover:border-yellow-400 hover:text-yellow-400 transition-colors"
-                >
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 border border-gray-600 rounded-full flex items-center justify-center hover:border-yellow-400 hover:text-yellow-400 transition-colors"
-                >
-                  <Twitter className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 border border-gray-600 rounded-full flex items-center justify-center hover:border-yellow-400 hover:text-yellow-400 transition-colors"
-                >
-                  <Facebook className="w-5 h-5" />
-                </a>
-              </div>
+            <Card className="elegant-border bg-secondary/20">
+              <CardHeader>
+                <CardTitle>Follow Us</CardTitle>
+                <CardDescription>
+                  Stay connected with ADDORS on social media for the latest updates.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex space-x-4">
+                  {socialLinks.map((social, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="icon"
+                      className="elegant-border hover:bg-gold hover:text-black hover:border-gold"
+                      asChild
+                    >
+                      <a href={social.href} aria-label={social.label}>
+                        <social.icon className="w-5 h-5" />
+                      </a>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Contact */}
+            <div className="bg-muted/50 p-6 rounded-lg">
+              <h3 className="font-medium mb-2">Need Immediate Assistance?</h3>
+              <p className="text-muted-foreground text-sm mb-4">
+                For urgent casting inquiries or time-sensitive matters, call us directly.
+              </p>
+              <Button size="sm" className="bg-gold hover:bg-gold-dark text-black font-medium">
+                Call Now: +1 (555) 123-4567
+              </Button>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default Contact;

@@ -7,7 +7,6 @@ import SearchSheet from "./SearchSheet";
 import MenuSheet from "./MenuSheet";
 import Link from "next/link";
 import Image from "next/image";
-
 const Header = () => {
   const { setTheme, theme } = useTheme();
   return (
@@ -19,14 +18,14 @@ const Header = () => {
       <div className=" w-64 h-14 flex items-center justify-center ">
         <Link href="/" className="w-full h-full">
           <Image
-            src="/img/text only black.png"
+            src="/Img/textonlyblack.png"
             alt="Logo"
             className="object-contain dark:hidden"
             width={256}
             height={56}
           />
           <Image
-            src="/img/text only white.png"
+            src="/Img/textonlywhite.png"
             alt="Logo"
             width={256}
             height={56}

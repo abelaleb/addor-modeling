@@ -120,8 +120,8 @@ const Magazine = () => {
                   src={featuredArticle.image}
                   alt={featuredArticle.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                   width={1000}
-            height={1000}
+                  width={1000}
+                  height={1000}
                 />
               </div>
               <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
