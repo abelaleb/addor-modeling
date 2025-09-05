@@ -7,7 +7,7 @@ const Page = () => {
 
   return (
     <div className="max-w-screen-2xl m-auto px-2">
-      <div className="py-4">Fill the form below to become a modeld</div>
+      <div className="flex justify-center items-center py-4">Fill the form below to become a model</div>
       <div className="flex max-w-64 m-auto text-center">
         <div
           className={`flex-1 cursor-pointer font-semibold py-1 ${

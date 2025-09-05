@@ -12,29 +12,28 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div className="w-full flex justify-center gap-4 py-4">
-      <Link
-        href="/models/women"
-        className={`link font-medium px-5 py-1 ${
-          pathName.startsWith("/models/women")
-            ? " border-foreground border-2"
-            : ""
-        }`}
-      >
-        Women
-      </Link>
+        <Link
+          href="/models/women"
+          className={`link font-medium px-5 py-1 ${
+            pathName.startsWith("/models/women")
+              ? " border-foreground border-2"
+              : ""
+          }`}
+        >
+          Women
+        </Link>
 
-      <Link
-        href="/models/men"
-        className={`link font-medium px-5 py-1 ${
-          pathName.startsWith("/models/men")
-            ? " border-foreground border-2"
-            : ""
-        }`}
-      >
-        Men
-      </Link>
-<span></span>
-</div>
+        <Link
+          href="/models/men"
+          className={`link font-medium px-5 py-1 ${
+            pathName.startsWith("/models/men")
+              ? " border-foreground border-2"
+              : ""
+          }`}
+        >
+          Men
+        </Link>
+      </div>
       {/* <FloatingNav className="px-4 z-10">
         <div className="cursor-pointer">
           <SearchSheet />

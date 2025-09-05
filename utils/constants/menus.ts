@@ -11,10 +11,10 @@ export const menus = [
     name: "Become a Model",
     path: "/become-a-model",
   },
-  // {
-  //   name: "Magazine",
-  //   path: "/magazine",
-  // },
+  {
+    name: "Magazine",
+    path: "/magazine",
+  },
   {
     name: "Contact Us",
     path: "/contact-us",
