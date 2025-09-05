@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Control, Controller } from "react-hook-form";
@@ -43,17 +44,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           >
             <input {...getInputProps()} />
             {value?.preview ? (
-              <img
+              <Image
                 src={value.preview}
                 alt="Preview"
                 className="w-full h-72 object-cover"
+                 width={1000}
+            height={1000}
               />
             ) : (
-              <img
+              <Image
                 key={src}
                 src={src}
                 alt={`Example pose`}
                 className="w-full h-72 object-cover"
+                 width={1000}
+            height={1000}
               />
             )}
           </div>

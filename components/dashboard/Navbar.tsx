@@ -5,6 +5,7 @@ import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import MenuSheet from "../MenuSheet";
+import Image from "next/image";
 
 const Navbar = () => {
   const { setTheme, theme } = useTheme();
@@ -12,15 +13,19 @@ const Navbar = () => {
     <div className="px-6 py-2 items-center  flex justify-between w-full">
       <div className="w-64 h-14  ">
         <Link href="/" className="relative">
-          <img
+          <Image
             src={"/img/text only black.png"}
             alt="Logo"
             className=" scale-100 dark:scale-0"
+             width={1000}
+            height={1000}
           />
-          <img
+          <Image
             src="/img/text only white.png"
             alt="Logo"
             className="absolute top-0 scale-0 dark:scale-100"
+             width={1000}
+            height={1000}
           />
         </Link>
       </div>
