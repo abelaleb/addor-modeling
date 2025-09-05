@@ -145,7 +145,7 @@ const MaleModel = () => {
             name="aboutMe"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Anything else you'd like us to know</FormLabel>
+                <FormLabel>Anything else you&apos;d like us to know</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -201,7 +201,7 @@ const MaleModel = () => {
               Application Submitted
             </AlertTitle>
             <AlertDescription>
-              Thank you! We've received your information.
+              Thank you! We&apos;ve received your information.
             </AlertDescription>
           </Alert>
         </div>

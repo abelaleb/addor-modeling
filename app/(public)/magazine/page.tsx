@@ -116,10 +116,12 @@ const Magazine = () => {
           <Card className="overflow-hidden elegant-border hover-lift group">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="aspect-[16/10] lg:aspect-auto overflow-hidden">
-                <img
+                <Image
                   src={featuredArticle.image}
                   alt={featuredArticle.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                   width={1000}
+            height={1000}
                 />
               </div>
               <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
