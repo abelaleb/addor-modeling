@@ -63,7 +63,7 @@ const PostEditPage = ({ params }: PostEditPageProps) => {
 
   return (
     <>
-      <BackButton text='Back To Posts' link='/dashboard/posts' />
+      <BackButton text='Back To Posts' link='/admin/posts' />
       <h3 className='text-2xl mb-4'>Edit Post</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>

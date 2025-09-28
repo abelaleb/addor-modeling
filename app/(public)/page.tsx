@@ -6,9 +6,10 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(true);
+
   return (
-    <main className="flex h-screen flex-col items-center justify-between  dark">
-      <div className="relative w-full flex-1 overflow-hidden">
+    <main className="flex min-h-screen flex-col items-center justify-between overflow-hidden">
+      {/* <div className="relative w-full flex-1 overflow-hidden">
         <Image
           src="/Img/placeholder-img.png"
           alt="a model getting her picture taken by a photographer"
@@ -17,6 +18,7 @@ export default function Home() {
           priority
           quality={100}
         />
+
         <video
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
             isVideoLoaded ? "opacity-100" : "opacity-0"
@@ -35,12 +37,12 @@ export default function Home() {
           Your browser does not support the video tag.
         </video>
 
-        {/* Optional overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center text-white">
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white">
           <h1 className="text-4xl font-bold text-[1.4rem]">Top Talents</h1>
         </div>
-      </div>
-      <div className="md:flex-row flex flex-col items-center w-full gap-4 text-[1.3rem] font-medium justify-center flex-wrap text-nowrap py-6">
+      </div> */}
+
+      <div className="md:flex-row flex flex-col items-center w-full gap-4 text-[1.3rem] font-medium justify-center flex-wrap text-nowrap py-6 shrink-0 bg-background/70 backdrop-blur-md">
         {menus.map((menu, index) => (
           <Link key={index} href={menu.path}>
             {menu.name.toUpperCase()}

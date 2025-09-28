@@ -6,6 +6,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ReactQueryClientProvider } from "@/utils/providers/react-query-client-provider";
 import Header from "@/components/Header";
+import { Toaster } from "@/components/ui/sonner";
 
 const agdasima = Agdasima({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
             <Header />
             {children}
           </ThemeProvider>
+          <Toaster/>
         </ReactQueryClientProvider>
       </body>
     </html>

@@ -22,7 +22,7 @@ const Header = () => {
             alt="Logo"
             className="object-contain dark:hidden"
             width={256}
-            height={56}
+            height={56} 
           />
           <Image
             src="/Img/textonlywhite.png"
