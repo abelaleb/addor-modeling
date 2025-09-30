@@ -17,11 +17,11 @@ const ModelsLayout = ({ url }: { url: string }) => {
                   src={model.urls.regular}
                   alt="Image"
                   className=" object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500 ease-in-out"
-                  width={100}
-                  height={100}
+                  width={300}
+                  height={300}
                 />
               </div>
-              <div className="text-center py-1 "> Abraham Belay</div>
+              <div className="text-center py-1 "> xxxx xxxx</div>
             </div>
           ))}
       </div>

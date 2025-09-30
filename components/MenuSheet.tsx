@@ -10,10 +10,12 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Menu } from "lucide-react";
+import { useState } from "react";
 const MenuSheet = () => {
+  const [open,setOpen] = useState(false);
   return (
-    <Sheet>
-      <SheetTrigger>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
         <Menu />
       </SheetTrigger>
       <SheetContent side="bottom" className="h-full">
@@ -25,7 +27,7 @@ const MenuSheet = () => {
               {menus.map((menu: MenuProps, index: number) => {
                 return (
                   <div key={index}>
-                    <Link href={menu.path}>{menu.name.toUpperCase()}</Link>
+                    <Link href={menu.path} onClick={()=> setOpen(false)}>{menu.name.toUpperCase()}</Link>
                   </div>
                 );
               })}

@@ -14,14 +14,14 @@ const Navbar = () => {
       <div className="w-64 h-14  ">
         <Link href="/" className="relative">
           <Image
-            src={"/img/text only black.png"}
+            src={"/images/text only black.png"}
             alt="Logo"
             className=" scale-100 dark:scale-0"
              width={1000}
             height={1000}
           />
           <Image
-            src="/img/text only white.png"
+            src="/images/text only white.png"
             alt="Logo"
             className="absolute top-0 scale-0 dark:scale-100"
              width={1000}
