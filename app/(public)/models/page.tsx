@@ -4,7 +4,7 @@ import React from "react";
 
 const Page = () => {
   return (
-    <div className=" max-w-screen-lg justify-center w-full m-auto gap-2 flex text-2xl font-bold italic">
+    <div className=" max-w-screen-lg justify-center w-full m-auto gap-2 flex text-2xl font-bold italic pb-4">
       <Link href="/models/women" className="w-1/2">
         <div className="w-full relative">
           <Image

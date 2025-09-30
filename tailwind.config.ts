@@ -17,9 +17,6 @@ const config = {
   			'2xl': '1400px'
   		}
   	},
-  	fontSize: {
-  		base: '1rem'
-  	},
   	extend: {
   		colors: {
   			border: 'hsl(var(--border))',

@@ -7,7 +7,11 @@ const Page = () => {
 
   return (
     <div className="max-w-screen-2xl m-auto px-2">
-      <div className="flex justify-center items-center py-4">Fill the form below to become a model</div>
+      <div className="flex justify-center items-center py-4">
+        The quickest & easiest way is to send your images to us via this page.
+        Make sure you complete all the sections and someone will be in touch
+        with you if we feel that you have the right look for us.
+      </div>
       <div className="flex max-w-64 m-auto text-center">
         <div
           className={`flex-1 cursor-pointer font-semibold py-1 ${

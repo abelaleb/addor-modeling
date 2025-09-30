@@ -26,11 +26,11 @@ const SearchSheet = () => {
       </SheetTrigger>
       <SheetContent side="top" className="h-full">
         <SheetHeader>
-          {/* <SheetClose /> */}
+        {/* <SheetClose /> */}
 
           {/* <SheetTitle>xcfg</SheetTitle> */}
-          <SheetDescription className="flex items-center border-b pb-2">
-            <Search />
+          <SheetDescription className="flex items-center border-b pb-2 ">
+            <Search className="text-yellow-700"/>
             <Input className="border-0 focus-visible:ring-0 shadow-none" />
             <div
               className=" cursor-pointer"
@@ -38,7 +38,7 @@ const SearchSheet = () => {
                 setSheetOpen(false);
               }}
             >
-              <X />
+              <X className="font-bold hover:text-yellow-700"/>
             </div>
           </SheetDescription>
         </SheetHeader>

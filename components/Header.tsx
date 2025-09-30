@@ -10,26 +10,26 @@ import Image from "next/image";
 const Header = () => {
   const { setTheme, theme } = useTheme();
   return (
-    <div className="px-6 py-2 flex items-center justify-between w-full">
+    <div className="px-6 py-2 flex items-center justify-between w-full sticky top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md border-b border-border/50">
       <div className="cursor-pointer">
         <SearchSheet />
       </div>
       {/* logo */}
-      <div className=" w-64 h-14 flex items-center justify-center ">
+      <div className=" w-64 h-12 flex items-center justify-center ">
         <Link href="/" className="w-full h-full">
           <Image
-            src="/Img/textonlyblack.png"
+            src="/images/textonlyblack.png"
             alt="Logo"
-            className="object-contain dark:hidden"
-            width={256}
-            height={56} 
+            className="object-contain block dark:hidden"
+            width={300}
+            height={300} 
           />
           <Image
-            src="/Img/textonlywhite.png"
+            src="/images/textonlywhite.png"
             alt="Logo"
-            width={256}
-            height={56}
-            className="object-contain dark:block"
+            width={300}
+            height={300}
+            className="object-contain hidden dark:block"
             priority
           />
         </Link>
@@ -39,7 +39,7 @@ const Header = () => {
         <Button
           variant="outline"
           size="icon"
-          className="relative"
+          className="relative border-none hover:text-yellow-700"
           onClick={() => {
             setTheme(theme === "light" ? "dark" : "light");
           }}
