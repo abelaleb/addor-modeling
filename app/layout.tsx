@@ -5,7 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ReactQueryClientProvider } from "@/utils/providers/react-query-client-provider";
 import Header from "@/components/Header";
-import { Toaster } from "@/components/ui/sonner";
+// import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
 
 const agdasima = Agdasima({
@@ -52,7 +52,7 @@ export default function RootLayout({
             {children}
             <Footer/>
           </ThemeProvider>
-          <Toaster/>
+          {/* <Toaster/> */}
         </ReactQueryClientProvider>
       </body>
     </html>
