@@ -17,7 +17,7 @@ const HeroVideo = () => {
     const opacity = Math.max(0, 1 - scrollY / 800);
     const transform = `translateY(${scrollY * 0.5}px)`;
   return (
-    <div className="relative w-[100vw] flex-1 overflow-hidden h-[100vh]">
+    <div className="relative w-full flex-1 overflow-hidden h-[90vh]">
       <Image
         src="/images/placeholder-img.png"
         alt="a model getting her picture taken by a photographer"

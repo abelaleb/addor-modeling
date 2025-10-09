@@ -30,9 +30,9 @@ export default function Home() {
     },
   ];
   return (
-    <main className="flex flex-col items-center justify-between ">
+    <main className="flex flex-col items-center w-full justify-between ">
       {/* Hero Section */}
-      <section className="bg-background">
+      <section className="bg-background w-full">
         <HeroVideo />
       </section>
 
