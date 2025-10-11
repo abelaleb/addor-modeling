@@ -39,9 +39,9 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Facebook, href: "#", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/addormodels/", label: "Instagram" },
+    { icon: Twitter, href: "https://www.x.com/addormodels/", label: "Twitter" },
+    { icon: Facebook, href: "https://www.facebook.com/addormodels/", label: "Facebook" },
   ];
 
   return (
@@ -92,7 +92,7 @@ const Footer = () => {
                   className="text-muted-foreground hover:text-accent hover:bg-accent/10"
                   asChild
                 >
-                  <a href={social.href} aria-label={social.label}>
+                  <a href={social.href} target="_blank" aria-label={social.label}>
                     <social.icon className="h-5 w-5" />
                   </a>
                 </Button>

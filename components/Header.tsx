@@ -23,6 +23,7 @@ const Header = () => {
             className="object-contain block dark:hidden"
             width={300}
             height={300} 
+            priority
           />
           <Image
             src="/images/textonlywhite.png"

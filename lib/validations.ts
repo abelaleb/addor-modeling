@@ -83,7 +83,14 @@ const maleModelSchema = z.object({
   eyeColor: z.string().min(2, "Enter a valid eye color"),
   hairColor: z.string().min(2, "Enter a valid hair color"),
 
-  aboutMe: z.string().max(1000).optional(),
+  aboutMe: z.string().max(1000,"Maximum 1000 characters").optional(),
+
+  // Photos
+  closeUp: z.any().optional(),
+  side: z.any().optional(),
+  upperBody: z.any().optional(),
+  eyes: z.any().optional(),
+  fullLength: z.any().optional(),
 });
 
 export { femaleModelSchema, maleModelSchema };

@@ -39,7 +39,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      {/* for now use suppresshydrationwarning */}
       <body className={`${agdasima.variable} ${roboto.variable} font-sans`}>
         <ReactQueryClientProvider>
           <ThemeProvider

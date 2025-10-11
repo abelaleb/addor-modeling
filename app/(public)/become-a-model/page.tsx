@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import FemaleModel from "../../../components/forms/FemaleModel";
+import FemaleModel from "@/components/forms/FemaleModel";
 import MaleModel from "@/components/forms/MaleModel";
 const Page = () => {
   const [gender, setGender] = useState<String>("female");

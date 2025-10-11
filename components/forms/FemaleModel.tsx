@@ -16,11 +16,13 @@ import {
 import { Textarea } from "../ui/text-area";
 import ImageUpload from "../ImageUpload";
 import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 import { femaleModelSchema } from "@/lib/validations";
+import { submitModelApplication } from "@/app/(public)/become-a-model/action";
+
 type ModelFormData = z.infer<typeof femaleModelSchema>;
 
-const BecomeAModelForm = () => {
+const FemaleModel = () => {
   const form = useForm<ModelFormData>({
     resolver: zodResolver(femaleModelSchema),
     defaultValues: {
@@ -44,12 +46,52 @@ const BecomeAModelForm = () => {
   });
   
   const [success, setSuccess] = useState(false);
-  const onSubmit: SubmitHandler<ModelFormData> = (data) => {
-    console.log(data);
-    setSuccess(true);
-    setTimeout(() => {
-      setSuccess(false);
-    }, 3000);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit: SubmitHandler<ModelFormData> = async (data) => {
+    setIsSubmitting(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const formData = new FormData();
+      
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, value.toString());
+        }
+      });
+
+      formData.append('gender', 'female');
+
+      const photoFields = ['closeUp', 'side', 'upperBody', 'eyes', 'fullLength'];
+      photoFields.forEach(field => {
+        const photo = form.getValues(field as any);
+        if (photo instanceof File) {
+          console.log(`📸 Adding photo ${field}:`, photo.name);
+          formData.append(field, photo);
+        }
+      });
+
+      const result = await submitModelApplication(formData);
+     
+      if (result && result.success) {
+        console.log('✅ Application submitted successfully');
+        setSuccess(true);
+        form.reset();
+        
+                setTimeout(() => {
+          setSuccess(false);
+        }, 5000);
+      } else {
+        setError(result?.error || "Something went wrong. Please try again.");
+      }
+    } catch (err: any) {
+       setError(err.message || "Failed to submit application. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -77,10 +119,11 @@ const BecomeAModelForm = () => {
                       {...field}
                       placeholder={
                         name
-                          .replace(/([A-Z])/g, " $1") // Inserts space before capital letters
-                          .replace(/^./, (str) => str.toUpperCase()) // Capitalize first character
+                          .replace(/([A-Z])/g, " $1")
+                          .replace(/^./, (str) => str.toUpperCase())
                       }
                       className="rounded-none"
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -93,11 +136,16 @@ const BecomeAModelForm = () => {
             name="birthDate"
             render={({ field }) => (
               <FormItem className="flex items-center">
-                <FormLabel className="text-inherit text-xs pr-4  whitespace-nowrap">
+                <FormLabel className="text-inherit text-xs pr-4 whitespace-nowrap">
                   Birth Date
                 </FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} className="rounded-none" />
+                  <Input 
+                    type="date" 
+                    {...field} 
+                    className="rounded-none"
+                    disabled={isSubmitting}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -111,7 +159,7 @@ const BecomeAModelForm = () => {
           {(
             [
               ["height", "Height in cm"],
-              ["cupSize", "Cup size in cm"],
+              ["cupSize", "Cup size"],
               ["hips", "Hips in cm"],
               ["waist", "Waist in cm"],
               ["bust", "Bust in cm"],
@@ -131,6 +179,7 @@ const BecomeAModelForm = () => {
                       {...field}
                       placeholder={placeholder}
                       className="rounded-none"
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -153,6 +202,7 @@ const BecomeAModelForm = () => {
                     {...field}
                     className="rounded-none"
                     placeholder="Tell us more about yourself"
+                    disabled={isSubmitting}
                   />
                 </FormControl>
                 <FormMessage />
@@ -174,8 +224,17 @@ const BecomeAModelForm = () => {
             ] as const
           ).map(([name, label, src]) => (
             <div className="flex flex-col gap-2" key={name}>
-              <ImageUpload fieldName={name} control={form.control} src={src} />
-              <Button className="bg-foreground text-background rounded-none">
+              <ImageUpload 
+                fieldName={name} 
+                control={form.control} 
+                src={src}
+                disabled={isSubmitting}
+              />
+              <Button 
+                type="button"
+                className="bg-foreground text-background rounded-none"
+                disabled={isSubmitting}
+              >
                 {label}
               </Button>
               <FormMessage />
@@ -188,23 +247,44 @@ const BecomeAModelForm = () => {
           <Button
             type="submit"
             className="bg-foreground text-background rounded-none"
+            disabled={isSubmitting}
           >
-            Submit Application
+            {isSubmitting ? "Submitting..." : "Submit Application"}
           </Button>
         </div>
       </form>
+
+      {/* Success Alert */}
       {success && (
-        <div className="fixed top-5 right-5 max-w-screen-sm mx-auto mt-4">
+        <div className="fixed top-5 right-5 max-w-screen-sm mx-auto mt-4 z-50">
           <Alert
             variant="default"
             className="border-green-600 bg-green-50 text-green-800"
           >
             <CheckCircle2 className="h-5 w-5 text-green-600" />
             <AlertTitle className="text-green-800">
-              Application Submitted
+              Application Submitted Successfully!
             </AlertTitle>
             <AlertDescription>
-              Thank you! We&apos;ve received your information.
+              Thank you! We&apos;ve received your application and photos. Someone will be in touch soon.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {/* Error Alert */}
+      {error && (
+        <div className="fixed top-5 right-5 max-w-screen-sm mx-auto mt-4 z-50">
+          <Alert
+            variant="destructive"
+            className="border-red-600 bg-red-50 text-red-800"
+          >
+            <AlertCircle className="h-5 w-5 text-red-600" />
+            <AlertTitle className="text-red-800">
+              Submission Failed
+            </AlertTitle>
+            <AlertDescription>
+              {error}
             </AlertDescription>
           </Alert>
         </div>
@@ -213,4 +293,4 @@ const BecomeAModelForm = () => {
   );
 };
 
-export default BecomeAModelForm;
+export default FemaleModel;

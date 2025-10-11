@@ -10,28 +10,33 @@ type ImageUploadProps = {
   fieldName: string;
   control: Control<any>;
   src: string; // fallback image src
+  disabled?: boolean; // Added disabled prop
 };
 
 const DropzoneField: React.FC<{
   value: FileWithPreview | null;
   onChange: (file: FileWithPreview | null) => void;
   fallbackSrc: string;
-}> = ({ value, onChange, fallbackSrc }) => {
+  disabled?: boolean; // Added disabled prop
+}> = ({ value, onChange, fallbackSrc, disabled }) => {
   // Handle file drop
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
+      if (disabled) return; // Prevent upload when disabled
+      
       const fileWithPreview: FileWithPreview[] = acceptedFiles.map((file) =>
         Object.assign(file, { preview: URL.createObjectURL(file) })
       );
       onChange(fileWithPreview[0]);
     },
-    [onChange]
+    [onChange, disabled]
   );
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
     multiple: false,
+    disabled, // Pass disabled to dropzone
   });
 
   // Cleanup object URL when component unmounts or value changes
@@ -46,31 +51,58 @@ const DropzoneField: React.FC<{
   return (
     <div
       {...getRootProps()}
-      className="cursor-pointer border-2 rounded-lg p-2 text-center hover:border-gray-400"
+      className={`border-2 rounded-lg p-2 text-center transition-all ${
+        disabled 
+          ? 'cursor-not-allowed opacity-50 border-gray-300' 
+          : isDragActive 
+            ? 'cursor-pointer border-blue-500 bg-blue-50' 
+            : 'cursor-pointer border-gray-300 hover:border-gray-400'
+      }`}
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} disabled={disabled} />
       {value?.preview ? (
-        <Image
-          src={value.preview}
-          alt="Preview"
-          className="w-full h-72 object-cover rounded-md"
-          width={1000}
-          height={1000}
-        />
+        <div className="relative">
+          <Image
+            src={value.preview}
+            alt="Preview"
+            className="w-full h-72 object-cover rounded-md"
+            width={1000}
+            height={1000}
+          />
+          {!disabled && (
+            <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-all rounded-md">
+              <p className="text-white text-sm font-medium">Click to change</p>
+            </div>
+          )}
+        </div>
       ) : (
-        <Image
-          src={fallbackSrc}
-          alt="Example pose"
-          className="w-full h-72 object-cover rounded-md"
-          width={1000}
-          height={1000}
-        />
+        <div className="relative">
+          <Image
+            src={fallbackSrc}
+            alt="Example pose"
+            className="w-full h-72 object-cover rounded-md"
+            width={1000}
+            height={1000}
+          />
+          {!disabled && (
+            <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center rounded-md">
+              <p className="text-white text-sm font-medium">
+                {isDragActive ? 'Drop image here' : 'Click or drag to upload'}
+              </p>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
 };
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ fieldName, control, src }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ 
+  fieldName, 
+  control, 
+  src, 
+  disabled 
+}) => {
   return (
     <Controller
       control={control}
@@ -80,6 +112,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ fieldName, control, src }) =>
           value={value as FileWithPreview | null}
           onChange={onChange}
           fallbackSrc={src}
+          disabled={disabled}
         />
       )}
     />
