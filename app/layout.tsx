@@ -1,12 +1,12 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Agdasima, Roboto } from "next/font/google";
-import "./globals.css"
+import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ReactQueryClientProvider } from "@/utils/providers/react-query-client-provider";
 import Header from "@/components/Header";
-// import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
+import ConditionalLayout from "@/components/ConditionalLayout";
 
 const agdasima = Agdasima({
   subsets: ["latin"],
@@ -43,17 +43,16 @@ export default function RootLayout({
       {/* for now use suppresshydrationwarning */}
       <body className={`${agdasima.variable} ${roboto.variable} font-sans`}>
         <ReactQueryClientProvider>
-          <ThemeProvider
+          {/* <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem={true}
             disableTransitionOnChange
-          >
-            <Header />
-            {children}
-            <Footer/>
-          </ThemeProvider>
-          {/* <Toaster/> */}
+          > */}
+            {/* <Header /> */}
+            <ConditionalLayout>{children}</ConditionalLayout>
+            {/* <Footer/> */}
+          {/* </ThemeProvider> */}
         </ReactQueryClientProvider>
       </body>
     </html>

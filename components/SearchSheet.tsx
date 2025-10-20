@@ -29,20 +29,20 @@ const SearchSheet = () => {
         <SheetHeader className="bg-background/90">
           <SheetDescription className="flex items-center border-b ">
             <Search className="text-tertiary" />
-            <Input
-              className="border-0 focus-visible:ring-0 shadow-none text-[12rem] p-2"
+             <Input
+              className="flex-1 border-0 focus-visible:ring-0 shadow-none bg-transparent text-base md:text-2xl placeholder:text-gray-400"
               autoFocus
               placeholder="Search..."
             />
 
             {/* use SheetClose asChild so it closes the sheet automatically */}
             <SheetClose asChild>
-              <div
-                className="cursor-pointer border-2 border-black"
+              <button
                 aria-label="Close search"
+                className="cursor-pointer p-2 rounded-md hover:bg-muted/50 transition"
               >
-                <X className="hover:text-tertiary" />
-              </div>
+                <X className="w-6 h-6 md:w-7 md:h-7 text-tertiary" />
+              </button>
             </SheetClose>
           </SheetDescription>
         </SheetHeader>

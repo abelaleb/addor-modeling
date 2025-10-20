@@ -3,7 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
-import { createClient } from '@/utils/supabase/client';
+import { createBrowserSupabaseClient } from '@/utils/supabase/client';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
@@ -13,7 +13,7 @@ const AuthTabs = () => {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      const supabase = createClient();
+      const supabase = createBrowserSupabaseClient();
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',

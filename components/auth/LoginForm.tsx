@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { createBrowserSupabaseClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,7 +21,7 @@ const LoginForm = () => {
     setError('');
 
     try {
-      const supabase = createClient();
+      const supabase = createBrowserSupabaseClient();
       
       const { error } = await supabase.auth.signInWithPassword({
         email,

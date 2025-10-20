@@ -1,28 +1,29 @@
 import { Card, CardContent } from "../ui/card";
-import { Newspaper } from "lucide-react";
 import { LucideIcon } from "lucide-react";
+
 interface DashboardCardProps {
   title: string;
   count: number;
   icon: React.ReactElement<LucideIcon>;
 }
+
 const DashboardCard = ({ title, count, icon }: DashboardCardProps) => {
   return (
-    <>
-      <Card className="bg-slate-100 dark:bg-slate-800 p-4 pb-0">
-        <CardContent className="text-3xl text-center mb-4 font-bold text-slate-500 dark:text-slate-200">
-          <h3 className="text-3xl text-center mb-4 font-bold text-slate-500 dark:text-slate-200">
+    <Card className="bg-white dark:bg-black border-2 border-black dark:border-white rounded-none">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
             {title}
           </h3>
-          <div className="flex gap-5 justify-center items-center">
+          <div className="opacity-50">
             {icon}
-            <h3 className="text-5xl font-semibold text-slate-500 dark:text-slate-200">
-              {count}
-            </h3>
           </div>
-        </CardContent>
-      </Card>
-    </>
+        </div>
+        <div className="text-4xl font-bold">
+          {count.toLocaleString()}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
