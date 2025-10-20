@@ -1,4 +1,4 @@
-export const menus = [
+export const publicMenus = [
   {
     name: "Models",
     path: "/models",
@@ -20,5 +20,8 @@ export const menus = [
     path: "/contact-us",
   },
   { name: "About Us", path: "/about-us" },
+];
+
+export const adminMenus = [
   { name: "Dashboard", path: "/admin" },
 ];

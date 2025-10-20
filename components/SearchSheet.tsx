@@ -10,6 +10,7 @@ import {
 } from "./ui/sheet";
 import { Search, X } from "lucide-react";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 const SearchSheet = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -19,29 +20,29 @@ const SearchSheet = () => {
     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       {/* asChild lets a custom element act as the trigger */}
       <SheetTrigger asChild>
-        <button aria-label="Open search">
+        <div aria-label="Open search" className="cursor-pointer">
           <Search />
-        </button>
+        </div>
       </SheetTrigger>
 
       <SheetContent side="top" className="h-full">
-        <SheetHeader>
-          <SheetDescription className="flex items-center border-b pb-2">
-            <Search className="text-yellow-700" />
+        <SheetHeader className="bg-background/90">
+          <SheetDescription className="flex items-center border-b ">
+            <Search className="text-tertiary" />
             <Input
-              className="border-0 focus-visible:ring-0 shadow-none"
+              className="border-0 focus-visible:ring-0 shadow-none text-[12rem] p-2"
               autoFocus
               placeholder="Search..."
             />
 
             {/* use SheetClose asChild so it closes the sheet automatically */}
             <SheetClose asChild>
-              <button
-                className="cursor-pointer"
+              <div
+                className="cursor-pointer border-2 border-black"
                 aria-label="Close search"
               >
-                <X className="font-bold hover:text-yellow-700" />
-              </button>
+                <X className="hover:text-tertiary" />
+              </div>
             </SheetClose>
           </SheetDescription>
         </SheetHeader>

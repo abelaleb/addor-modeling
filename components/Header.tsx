@@ -11,7 +11,7 @@ const Header = () => {
   const { setTheme, theme } = useTheme();
   return (
     <div className="px-6 py-2 flex items-center justify-between w-full sticky top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md border-b border-border/50">
-      <div className="cursor-pointer">
+      <div className="cursor-pointer hover:text-tertiary">
         <SearchSheet />
       </div>
       {/* logo */}
@@ -25,19 +25,19 @@ const Header = () => {
             height={300} 
             priority
           />
-          <Image
+          {/* <Image
             src="/images/textonlywhite.png"
             alt="Logo"
             width={300}
             height={300}
             className="object-contain hidden dark:block"
             priority
-          />
+          /> */}
         </Link>
       </div>
 
       <div className="cursor-pointer flex items-center justify-center gap-3">
-        <Button
+        {/* <Button
           variant="outline"
           size="icon"
           className="relative border-none hover:text-yellow-700"
@@ -48,7 +48,7 @@ const Header = () => {
           <SunIcon className="h-[1.2rem] w-[1.2rem] transition-all dark:hidden" />
           <MoonIcon className="h-[1.2rem] w-[1.2rem] transition-all hidden dark:block" />
           <span className="sr-only">Toggle theme</span>
-        </Button>
+        </Button> */}
         <MenuSheet />
       </div>
     </div>
