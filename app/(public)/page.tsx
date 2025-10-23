@@ -4,7 +4,7 @@ import HeroVideo from "@/components/HeroVideo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { menus } from "@/utils/constants/menus";
+// import { menus } from "@/utils/constants/menus";
 import { ArrowRight, Camera, Star, Users } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
