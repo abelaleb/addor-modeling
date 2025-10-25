@@ -19,14 +19,13 @@ export default async function AdminLayout({
     redirect("/auth");
   }
 
-  // Check admin role
-  const { data: roleData } = await supabase
-    .from("user_roles")
+  const { data: userData } = await supabase
+    .from("users")
     .select("role")
-    .eq("user_id", user.id)
+    .eq("id", user.id)
     .single();
 
-  if (roleData?.role !== "admin") {
+  if (userData?.role !== "admin") {
     redirect("/unauthorized");
   }
 

@@ -1,9 +1,214 @@
-import React from 'react'
+import { createServerSupabaseClient } from "@/utils/supabase/server";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Users, UserCheck, Shield, UserX } from "lucide-react";
+import { Suspense } from "react";
 
-const page = () => {
+async function UsersStats() {
+  const supabase = createServerSupabaseClient();
+
+  const [
+    { count: totalUsers },
+    { count: adminUsers },
+    { count: clientUsers },
+    { count: activeUsers }
+  ] = await Promise.all([
+    supabase.from('users').select('*', { count: 'exact', head: true }),
+    supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'admin'),
+    supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'client'),
+    supabase.from('users').select('*', { count: 'exact', head: true }).eq('is_active', true)
+  ]);
+
   return (
-    <div>page</div>
-  )
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="border-2 border-black dark:border-white rounded-none p-4 bg-white dark:bg-black">
+        <div className="flex items-center gap-3">
+          <Users size={24} />
+          <div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Total Users</p>
+            <p className="text-2xl font-bold">{totalUsers || 0}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="border-2 border-black dark:border-white rounded-none p-4 bg-white dark:bg-black">
+        <div className="flex items-center gap-3">
+          <Shield size={24} className="text-blue-600" />
+          <div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Admins</p>
+            <p className="text-2xl font-bold">{adminUsers || 0}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="border-2 border-black dark:border-white rounded-none p-4 bg-white dark:bg-black">
+        <div className="flex items-center gap-3">
+          <UserCheck size={24} className="text-green-600" />
+          <div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Clients</p>
+            <p className="text-2xl font-bold">{clientUsers || 0}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="border-2 border-black dark:border-white rounded-none p-4 bg-white dark:bg-black">
+        <div className="flex items-center gap-3">
+          <UserCheck size={24} className="text-green-600" />
+          <div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Active</p>
+            <p className="text-2xl font-bold">{activeUsers || 0}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default page
+async function UsersTable() {
+  const supabase = createServerSupabaseClient();
+
+  const { data: users, error } = await supabase
+    .from('users')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error loading users:', error);
+    return <div>Error loading users</div>;
+  }
+
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 border-blue-800 dark:border-blue-400';
+      case 'client':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-800 dark:border-green-400';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400 border-gray-800 dark:border-gray-400';
+    }
+  };
+
+  const getStatusColor = (isActive: boolean) => {
+    return isActive
+      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-800 dark:border-green-400'
+      : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400 border-red-800 dark:border-red-400';
+  };
+
+  return (
+    <div className="border-2 border-black dark:border-white rounded-none bg-white dark:bg-black">
+      <div className="p-6 border-b-2 border-black dark:border-white">
+        <h2 className="text-2xl font-bold">All Users</h2>
+      </div>
+
+      <Table>
+        <TableHeader>
+          <TableRow className="border-b-2 border-black dark:border-white hover:bg-gray-50 dark:hover:bg-gray-900">
+            <TableHead className="font-bold">Name</TableHead>
+            <TableHead className="font-bold">Email</TableHead>
+            <TableHead className="font-bold">Role</TableHead>
+            <TableHead className="font-bold">Status</TableHead>
+            <TableHead className="font-bold">Email Verified</TableHead>
+            <TableHead className="font-bold">Joined</TableHead>
+            <TableHead className="font-bold">Last Sign In</TableHead>
+            <TableHead className="font-bold text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {users && users.length > 0 ? (
+            users.map((user) => (
+              <TableRow 
+                key={user.id}
+                className="border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900"
+              >
+                <TableCell className="font-medium">
+                  {user.full_name || 'N/A'}
+                </TableCell>
+                <TableCell>{user.email || 'N/A'}</TableCell>
+                <TableCell>
+                  <Badge 
+                    variant="outline" 
+                    className={`rounded-none border-2 ${getRoleColor(user.role)}`}
+                  >
+                    {user.role}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge 
+                    variant="outline" 
+                    className={`rounded-none border-2 ${getStatusColor(user.is_active)}`}
+                  >
+                    {user.is_active ? 'Active' : 'Inactive'}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {user.email_confirmed ? (
+                    <Badge variant="outline" className="rounded-none border-2 bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 border-green-800 dark:border-green-400">
+                      ✓ Verified
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="rounded-none border-2 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 border-yellow-800 dark:border-yellow-400">
+                      Pending
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {new Date(user.created_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell>
+                  {user.last_sign_in_at 
+                    ? new Date(user.last_sign_in_at).toLocaleDateString()
+                    : 'Never'
+                  }
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button 
+                    size="sm"
+                    variant="outline"
+                    className="border-2 border-black dark:border-white rounded-none"
+                  >
+                    Edit
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={8} className="text-center py-8 text-gray-500">
+                No users found
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+export default function UsersPage() {
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-4xl font-bold mb-2">Users</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Manage user accounts and permissions
+        </p>
+      </div>
+
+      <Suspense fallback={<div>Loading stats...</div>}>
+        <UsersStats />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading users...</div>}>
+        <UsersTable />
+      </Suspense>
+    </div>
+  );
+}

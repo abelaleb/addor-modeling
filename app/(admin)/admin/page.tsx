@@ -6,17 +6,16 @@ import ApplicationsTable from "@/components/dashboard/ApplicationsTable";
 export default async function AdminDashboard() {
   const supabase = createServerSupabaseClient();
 
-  // Fetch real statistics
   const [
     { count: totalApplications },
     { count: pendingApplications },
-    { count: acceptedModels },
+    { count: activeModels },
     { count: totalUsers }
   ] = await Promise.all([
     supabase.from('model_applications').select('*', { count: 'exact', head: true }),
     supabase.from('model_applications').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('model_applications').select('*', { count: 'exact', head: true }).eq('status', 'accepted'),
-    supabase.from('user_roles').select('*', { count: 'exact', head: true })
+    supabase.from('models').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+    supabase.from('users').select('*', { count: 'exact', head: true })
   ]);
 
   return (
@@ -42,7 +41,7 @@ export default async function AdminDashboard() {
         />
         <DashboardCard
           title="Active Models"
-          count={acceptedModels || 0}
+          count={activeModels || 0}
           icon={<UserCheck className="text-black dark:text-white" size={48} />}
         />
         <DashboardCard

@@ -16,7 +16,7 @@ export default function ConditionalLayout({
   const isAuthRoute = pathname?.startsWith("/auth");
   
   // Don't show header/footer on admin or auth pages
-  const showLayout = !isAdminRoute && !isAuthRoute;
+  const showLayout = !isAdminRoute;
 
   if (!showLayout) {
     return <>{children}</>;

@@ -1,12 +1,12 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
-  });
+  })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,55 +14,79 @@ export async function middleware(request: NextRequest) {
     {
       cookies: {
         get(name: string) {
-          return request.cookies.get(name)?.value;
+          return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({ name, value, ...options });
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          })
           response = NextResponse.next({
             request: {
               headers: request.headers,
             },
-          });
-          response.cookies.set({ name, value, ...options });
+          })
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          })
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({ name, value: '', ...options });
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
           response = NextResponse.next({
             request: {
               headers: request.headers,
             },
-          });
-          response.cookies.set({ name, value: '', ...options });
+          })
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
         },
       },
     }
-  );
+  )
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  // Check if accessing admin routes
+  // If accessing admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Not logged in - redirect to auth
     if (!user) {
-      return NextResponse.redirect(new URL('/auth', request.url));
+      const redirectUrl = request.nextUrl.clone()
+      redirectUrl.pathname = '/login'
+      redirectUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
     }
 
-    // Check if user has admin role
-    const { data: roleData } = await supabase
-      .from('user_roles')
+    // Check if user has admin role (updated for your schema)
+    const { data: userData } = await supabase
+      .from('users')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()
 
-    if (roleData?.role !== 'admin') {
-      // Not an admin - redirect to unauthorized page
-      return NextResponse.redirect(new URL('/unauthorized', request.url));
+    if (!userData || userData.role !== 'admin') {
+      const redirectUrl = request.nextUrl.clone()
+      redirectUrl.pathname = '/unauthorized'
+      return NextResponse.redirect(redirectUrl)
     }
   }
 
-  return response;
+  return response
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
-};
+  matcher: [
+    '/admin/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+}
