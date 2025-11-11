@@ -6,11 +6,13 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
 import { Search, X } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const SearchSheet = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -22,11 +24,14 @@ const SearchSheet = () => {
       <SheetTrigger asChild>
         <div aria-label="Open search" className="cursor-pointer">
           <Search />
-        </div>
+        </div>  
       </SheetTrigger>
 
       <SheetContent side="top" className="h-full">
         <SheetHeader className="bg-background/90">
+        <VisuallyHidden>
+            <SheetTitle>Search Panel</SheetTitle>
+          </VisuallyHidden>
           <SheetDescription className="flex items-center border-b ">
             <Search className="text-tertiary" />
              <Input

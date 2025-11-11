@@ -18,7 +18,7 @@ import ImageUpload from "../ImageUpload";
 import { useEffect, useState } from "react";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { maleModelSchema } from "@/lib/validations";
-import { submitModelApplication } from "@/app/(public)/become-a-model/action";
+import { submitModelApplication } from "@/app/(app)/(public)/become-a-model/action";
 
 type ModelFormData = z.infer<typeof maleModelSchema>;
 

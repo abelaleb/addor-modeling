@@ -22,6 +22,4 @@ export const publicMenus = [
   { name: "About Us", path: "/about-us" },
 ];
 
-export const adminMenus = [
-  { name: "Dashboard", path: "/admin" },
-];
+export const adminMenus = [{ name: "Dashboard", path: "/admin" }];
