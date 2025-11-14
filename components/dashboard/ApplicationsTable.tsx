@@ -17,7 +17,7 @@ interface ApplicationsTableProps {
 }
 
 export default async function ApplicationsTable({ limit }: ApplicationsTableProps) {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   let query = supabase
     .from('model_applications')

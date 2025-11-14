@@ -14,25 +14,25 @@ interface ApplicationDetailPageProps {
   };
 }
 
-export default async function ApplicationDetailPage({ params }: ApplicationDetailPageProps) {
-  const supabase = createServerSupabaseClient();
+export default async function ApplicationDetailPage(props: ApplicationDetailPageProps) {
+  const { id } = await props.params;  // ⬅ FIXED
 
-  // Fetch application details
+  const supabase = await createServerSupabaseClient();
+
   const { data: application, error } = await supabase
-    .from('model_applications')
-    .select('*')
-    .eq('id', params.id)
+    .from("model_applications")
+    .select("*")
+    .eq("id", id)     // ⬅ USE THE UNWRAPPED VALUE
     .single();
 
   if (error || !application) {
     notFound();
   }
 
-  // Fetch associated photos
   const { data: photos } = await supabase
-    .from('model_photos')
-    .select('*')
-    .eq('application_id', params.id);
+    .from("model_photos")
+    .select("*")
+    .eq("application_id", id);
 
   const getStatusColor = (status: string) => {
     switch (status) {

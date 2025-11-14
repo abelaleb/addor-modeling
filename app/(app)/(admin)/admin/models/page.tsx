@@ -13,7 +13,7 @@ import { UserCheck, Users, UserX, Archive } from "lucide-react";
 import { Suspense } from "react";
 
 async function ModelsStats() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const [
     { count: totalModels },
@@ -73,7 +73,7 @@ async function ModelsStats() {
 }
 
 async function ModelsTable() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { data: models, error } = await supabase
     .from('models')

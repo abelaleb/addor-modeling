@@ -3,7 +3,7 @@ import type { DashboardStats, ModelApplication, Model, User } from '@/types/data
 
 // Check if current user is admin
 export async function isUserAdmin(): Promise<boolean> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const { data: { user } } = await supabase.auth.getUser();
   
@@ -20,7 +20,7 @@ export async function isUserAdmin(): Promise<boolean> {
 
 // Get dashboard statistics
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const [
     { count: totalApplications },
@@ -44,7 +44,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
 // Get all model applications with optional status filter
 export async function getModelApplications(status?: 'pending' | 'approved' | 'rejected'): Promise<ModelApplication[]> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   let query = supabase
     .from('model_applications')
@@ -64,7 +64,7 @@ export async function getModelApplications(status?: 'pending' | 'approved' | 're
 
 // Get single application by ID
 export async function getApplicationById(id: string): Promise<ModelApplication | null> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const { data, error } = await supabase
     .from('model_applications')
@@ -79,7 +79,7 @@ export async function getApplicationById(id: string): Promise<ModelApplication |
 
 // Get all models
 export async function getModels(status?: 'active' | 'inactive' | 'archived'): Promise<Model[]> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   let query = supabase
     .from('models')
@@ -99,7 +99,7 @@ export async function getModels(status?: 'active' | 'inactive' | 'archived'): Pr
 
 // Get all users
 export async function getAllUsers(): Promise<User[]> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const { data, error } = await supabase
     .from('users')
@@ -113,7 +113,7 @@ export async function getAllUsers(): Promise<User[]> {
 
 // Get recent applications for dashboard
 export async function getRecentApplications(limit: number = 10): Promise<ModelApplication[]> {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const { data, error } = await supabase
     .from('model_applications')
@@ -128,7 +128,7 @@ export async function getRecentApplications(limit: number = 10): Promise<ModelAp
 
 // Get photos for an application
 export async function getApplicationPhotos(applicationId: string) {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const { data, error } = await supabase
     .from('model_photos')

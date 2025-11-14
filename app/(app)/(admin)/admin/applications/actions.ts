@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function updateApplicationStatus(formData: FormData) {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   const applicationId = formData.get('applicationId') as string;
   const status = formData.get('status') as 'approved' | 'rejected';

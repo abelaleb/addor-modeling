@@ -13,7 +13,7 @@ import { Users, UserCheck, Shield, UserX } from "lucide-react";
 import { Suspense } from "react";
 
 async function UsersStats() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const [
     { count: totalUsers },
@@ -73,7 +73,7 @@ async function UsersStats() {
 }
 
 async function UsersTable() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { data: users, error } = await supabase
     .from('users')

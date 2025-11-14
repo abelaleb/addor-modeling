@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FileText, Clock, CheckCircle, XCircle } from "lucide-react";
 
 async function ApplicationsStats() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const [
     { count: totalApplications },

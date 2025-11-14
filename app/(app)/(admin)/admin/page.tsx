@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/utils/supabase/server";
 import ApplicationsTable from "@/components/dashboard/ApplicationsTable";
 
 export default async function AdminDashboard() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const [
     { count: totalApplications },

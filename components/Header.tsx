@@ -15,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
 
 interface UserProfile {
   email?: string;
@@ -87,33 +88,16 @@ const Header = () => {
       {/* Right: Auth + Menu */}
       <div className="cursor-pointer flex items-center justify-center gap-3">
         {user ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className="flex items-center justify-center rounded-full hover:bg-muted p-1.5 transition-colors focus:outline-none"
-                aria-label="User Menu"
-              >
-                <UserRound
-                  className="w-6 h-6 text-foreground hover:text-tertiary transition-colors"
-                  strokeWidth={2}
-                />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
-              <DropdownMenuItem asChild>
-                  <UserCircle2 className="w-4 h-4" />
-                  Profile
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={handleSignOut}
-                className="flex items-center gap-2 text-red-500 cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+           <div className=" border-black dark:border-white">
+            <Button
+              onClick={handleSignOut}
+              variant="outline"
+              className="w-full flex items-center gap-2 border-2 border-black dark:border-white rounded-none hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+            >
+              <LogOut size={18} />
+              Sign Out
+            </Button>
+          </div>
         ) : (
           <Link href="/auth" className="font-bold hover:text-tertiary">
             Sign in

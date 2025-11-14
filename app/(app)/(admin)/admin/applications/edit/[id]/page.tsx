@@ -12,7 +12,7 @@ interface ApplicationDetailPageProps {
 }
 
 export default async function ApplicationDetailPage({ params }: ApplicationDetailPageProps) {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   // Fetch application
   const { data: application, error: appError } = await supabase
