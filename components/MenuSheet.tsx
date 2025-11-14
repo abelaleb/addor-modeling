@@ -6,6 +6,7 @@ import {
   SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -14,7 +15,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 
 const MenuSheet = () => {
-  const [open,setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -22,22 +23,22 @@ const MenuSheet = () => {
         <Menu />
       </SheetTrigger>
       <SheetContent side="bottom" className="h-full">
-        <SheetClose />
+        {/* <SheetClose /> */}
         <SheetHeader className="h-full">
           <SheetTitle>ADDOR</SheetTitle>
-          <SheetDescription className="h-full">
             <div className="h-full flex justify-center text-lg items-center flex-col gap-y-5">
               {publicMenus.map((menu: MenuProps, index: number) => {
                 return (
                   <div key={index}>
-                    <Link href={menu.path} onClick={()=> setOpen(false)}>{menu.name.toUpperCase()}</Link>
-                   </div>
-                )
+                    <Link href={menu.path} onClick={() => setOpen(false)}>
+                      {menu.name.toUpperCase()}
+                    </Link>
+                  </div>
+                );
               })}
             </div>
-          </SheetDescription>
-          {/* <SheetClose /> */}
         </SheetHeader>
+        <SheetClose />
       </SheetContent>
     </Sheet>
   );
