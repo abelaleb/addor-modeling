@@ -151,20 +151,24 @@ export default function Home() {
             industry&apos;s most respected agency.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-white text-primary hover:bg-white/90 hover:text-black px-8 py-3"
-            >
-              Apply as Model
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-white text-primary hover:bg-white/90 hover:text-black px-8 py-3"
-            >
-              Book Our Talent
-            </Button>
+            <Link href="/become-a-model">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white text-primary hover:bg-white/90 hover:text-black px-8 py-3"
+              >
+                Apply as Model
+              </Button>
+            </Link>
+            <Link href="/models">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white text-primary hover:bg-white/90 hover:text-black px-8 py-3"
+              >
+                Book Our Talent
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
