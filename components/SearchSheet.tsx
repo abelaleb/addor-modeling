@@ -12,7 +12,7 @@ import {
 import { Search, X } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";;
 
 const SearchSheet = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
