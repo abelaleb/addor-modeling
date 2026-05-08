@@ -8,10 +8,9 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-
-import Posts from './collections/Posts';
-// import Categories from './collections/Categories.ts';
-// import Authors from './collections/Authors';
+import { Posts } from './collections/Posts'
+import { Categories } from './collections/Categories'
+import { Authors } from './collections/Authors'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Posts, Categories, Authors],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -39,15 +38,3 @@ export default buildConfig({
     // storage-adapter-placeholder
   ],
 })
-// import { buildConfig } from 'payload/config';
-// import Posts from './collections/Posts';
-// import Categories from './collections/Categories';
-// import Authors from './collections/Authors';
-
-// export default buildConfig({
-//   serverURL: 'http://localhost:3000',
-//   admin: {
-//     user: 'users',
-//   },
-//   collections: [Posts, Categories, Authors],
-// });

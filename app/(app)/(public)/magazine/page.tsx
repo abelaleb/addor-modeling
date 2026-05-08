@@ -1,104 +1,84 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Calendar, Clock, ArrowRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const Magazine = () => {
-  const featuredArticle = {
-    title: "The Future of Sustainable Fashion",
-    excerpt:
-      "Exploring how the modeling industry is embracing eco-consciousness and ethical practices for a better tomorrow.",
-    image:
-      "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    date: "March 15, 2024",
-    readTime: "8 min read",
-    category: "Sustainability",
-  };
+type Post = {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  status: string
+  isFeatured?: boolean
+  readTime?: number
+  publishedDate?: string
+  coverImage?: {
+    url: string
+    alt?: string
+  }
+  category?: {
+    id: string
+    name: string
+  }
+}
 
-  const articles = [
-    {
-      id: 1,
-      title: "Behind the Lens: Fashion Photography Trends",
-      excerpt:
-        "Discover the latest techniques and creative approaches shaping modern fashion photography.",
-      image:
-        "https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      date: "March 12, 2024",
-      readTime: "5 min read",
-      category: "Photography",
-    },
-    {
-      id: 2,
-      title: "Rising Stars: New Faces to Watch",
-      excerpt:
-        "Meet the emerging models who are redefining beauty standards and making their mark on the industry.",
-      image:
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      date: "March 10, 2024",
-      readTime: "6 min read",
-      category: "Talent",
-    },
-    {
-      id: 3,
-      title: "Runway Evolution: Milan Fashion Week Highlights",
-      excerpt:
-        "A comprehensive look at the standout shows and trends from this season's Milan Fashion Week.",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      date: "March 8, 2024",
-      readTime: "7 min read",
-      category: "Fashion Week",
-    },
-    {
-      id: 4,
-      title: "Digital Transformation in Modeling",
-      excerpt:
-        "How technology is revolutionizing casting, virtual fittings, and the modeling experience.",
-      image:
-        "https://images.unsplash.com/photo-1488716820095-cbe80883c496?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      date: "March 5, 2024",
-      readTime: "4 min read",
-      category: "Technology",
-    },
-    {
-      id: 5,
-      title: "Wellness in the Modeling World",
-      excerpt:
-        "Promoting mental health and well-being practices for models in a demanding industry.",
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      date: "March 3, 2024",
-      readTime: "6 min read",
-      category: "Wellness",
-    },
-    {
-      id: 6,
-      title: "Global Fashion: Cultural Influences",
-      excerpt:
-        "Exploring how diverse cultural backgrounds are enriching the global fashion landscape.",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      date: "March 1, 2024",
-      readTime: "8 min read",
-      category: "Culture",
-    },
-  ];
+type Category = {
+  id: string
+  name: string
+}
 
-  const categories = [
-    "All",
-    "Fashion Week",
-    "Photography",
-    "Talent",
-    "Sustainability",
-    "Technology",
-    "Wellness",
-    "Culture",
-  ];
+async function getPosts() {
+  const payload = await getPayload({ config })
+  const posts = await payload.find({
+    collection: 'posts',
+    where: {
+      status: {
+        equals: 'published',
+      },
+    },
+    sort: '-publishedDate',
+    depth: 2,
+    limit: 100,
+  })
+  return posts as { docs: Post[] }
+}
+
+async function getCategories() {
+  const payload = await getPayload({ config })
+  const categories = await payload.find({
+    collection: 'categories',
+    where: {
+      isActive: {
+        equals: true,
+      },
+    },
+    sort: 'name',
+    limit: 100,
+  })
+  return categories as { docs: Category[] }
+}
+
+export default async function Magazine() {
+  const { docs: posts } = await getPosts()
+  const { docs: categories } = await getCategories()
+
+  const featuredPost = posts.find((p) => p.isFeatured) || posts[0]
+  const regularPosts = posts.filter((p) => p.id !== featuredPost?.id)
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
 
   return (
     <div className="min-h-screen pt-20">
-      {/* Header */}
       <section className="py-16 px-6 bg-secondary/20">
         <div className="container mx-auto max-w-4xl text-center">
           <h1 className="heading-lg mb-6">ADDORS Magazine</h1>
@@ -110,122 +90,156 @@ const Magazine = () => {
       </section>
 
       <div className="container mx-auto max-w-7xl px-6 py-16">
-        {/* Featured Article */}
-        <section className="mb-16">
-          <h2 className="heading-md mb-8">Featured Story</h2>
-          <Card className="overflow-hidden elegant-border hover-lift group">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="aspect-[16/10] lg:aspect-auto overflow-hidden">
-                <Image
-                  src={featuredArticle.image}
-                  alt={featuredArticle.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  width={1000}
-                  height={1000}
-                />
-              </div>
-              <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
-                <Badge
-                  variant="secondary"
-                  className="w-fit mb-4 bg-gold/20 text-gold-dark"
-                >
-                  {featuredArticle.category}
-                </Badge>
-                <h3 className="heading-md mb-4">{featuredArticle.title}</h3>
-                <p className="body-lg text-muted-foreground mb-6">
-                  {featuredArticle.excerpt}
-                </p>
-                <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-6">
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{featuredArticle.date}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Clock className="w-4 h-4" />
-                    <span>{featuredArticle.readTime}</span>
-                  </div>
+        {featuredPost && (
+          <section className="mb-16">
+            <h2 className="heading-md mb-8">Featured Story</h2>
+            <Card className="overflow-hidden elegant-border hover-lift group">
+              <div className="grid grid-cols-1 lg:grid-cols-2">
+                <div className="aspect-[16/10] lg:aspect-auto overflow-hidden">
+                  {featuredPost.coverImage && (
+                    <Image
+                      src={featuredPost.coverImage.url || ''}
+                      alt={featuredPost.coverImage.alt || featuredPost.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      width={1000}
+                      height={1000}
+                    />
+                  )}
                 </div>
-                <Button className="w-fit bg-gold hover:bg-gold-dark text-black font-medium group">
-                  Read Full Article
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </CardContent>
-            </div>
-          </Card>
-        </section>
+                <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
+                  <Badge
+                    variant="secondary"
+                    className="w-fit mb-4 bg-gold/20 text-gold-dark"
+                  >
+                    {featuredPost.category?.name || 'Uncategorized'}
+                  </Badge>
+                  <h3 className="heading-md mb-4">{featuredPost.title}</h3>
+                  <p className="body-lg text-muted-foreground mb-6">
+                    {featuredPost.excerpt}
+                  </p>
+                  <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-6">
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>
+                        {featuredPost.publishedDate
+                          ? formatDate(featuredPost.publishedDate)
+                          : 'No date'}
+                      </span>
+                    </div>
+                    {featuredPost.readTime && (
+                      <div className="flex items-center space-x-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{featuredPost.readTime} min read</span>
+                      </div>
+                    )}
+                  </div>
+                  <Link href={`/magazine/${featuredPost.slug}`}>
+                    <Button className="w-fit bg-gold hover:bg-gold-dark text-black font-medium group">
+                      Read Full Article
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </div>
+            </Card>
+          </section>
+        )}
 
-        {/* Category Filter */}
-        <section className="mb-12">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((category) => (
+        {categories.length > 0 && (
+          <section className="mb-12">
+            <div className="flex flex-wrap gap-2 justify-center">
               <Button
-                key={category}
                 variant="outline"
                 size="sm"
                 className="elegant-border hover:bg-gold hover:text-black hover:border-gold"
               >
-                {category}
+                All
               </Button>
-            ))}
-          </div>
-        </section>
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant="outline"
+                  size="sm"
+                  className="elegant-border hover:bg-gold hover:text-black hover:border-gold"
+                >
+                  {category.name}
+                </Button>
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* Articles Grid */}
         <section>
           <h2 className="heading-md mb-8">Latest Articles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => (
-              <Card
-                key={article.id}
-                className="overflow-hidden elegant-border hover-lift group"
-              >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    width={1000}
-                    height={1000}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <Badge
-                    variant="secondary"
-                    className="w-fit mb-3 bg-gold/20 text-gold-dark text-xs"
-                  >
-                    {article.category}
-                  </Badge>
-                  <h3 className="font-medium text-lg mb-3 line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{article.date}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-3 h-3" />
-                      <span>{article.readTime}</span>
-                    </div>
+          {regularPosts.length === 0 ? (
+            <div className="text-center py-16 text-muted-foreground">
+              <p className="text-lg">No articles published yet.</p>
+              <p className="text-sm mt-2">Check back soon for new content!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {regularPosts.map((article) => (
+                <Card
+                  key={article.id}
+                  className="overflow-hidden elegant-border hover-lift group"
+                >
+                  <div className="aspect-[16/10] overflow-hidden">
+                    {article.coverImage && (
+                      <Image
+                        src={article.coverImage.url || ''}
+                        alt={article.coverImage.alt || article.title}
+                        width={1000}
+                        height={1000}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="p-0 h-auto font-medium text-gold hover:text-gold-dark group"
-                  >
-                    Read More
-                    <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <CardContent className="p-6">
+                    <Badge
+                      variant="secondary"
+                      className="w-fit mb-3 bg-gold/20 text-gold-dark text-xs"
+                    >
+                      {article.category?.name || 'Uncategorized'}
+                    </Badge>
+                    <h3 className="font-medium text-lg mb-3 line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+                      <div className="flex items-center space-x-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>
+                          {article.publishedDate
+                            ? formatDate(article.publishedDate)
+                            : 'No date'}
+                        </span>
+                      </div>
+                      {article.readTime && (
+                        <div className="flex items-center space-x-1">
+                          <Clock className="w-3 h-3" />
+                          <span>{article.readTime} min read</span>
+                        </div>
+                      )}
+                    </div>
+                    <Link href={`/magazine/${article.slug}`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-0 h-auto font-medium text-gold hover:text-gold-dark group"
+                      >
+                        Read More
+                        <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </section>
 
-        {/* Newsletter Signup */}
         <section className="mt-20 bg-secondary/20 rounded-lg p-8 md:p-12 text-center">
           <h2 className="heading-md mb-4">Stay in the Loop</h2>
           <p className="body-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -239,14 +253,12 @@ const Magazine = () => {
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/20"
             />
-            <Button className="bg-yellow-300 hover:bg-yellow-700 text-black  font-medium">
+            <Button className="bg-yellow-300 hover:bg-yellow-700 text-black font-medium">
               Subscribe
             </Button>
           </div>
         </section>
       </div>
     </div>
-  );
-};
-
-export default Magazine;
+  )
+}
