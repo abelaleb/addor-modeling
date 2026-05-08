@@ -8,40 +8,19 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Calendar, Clock, ArrowLeft, ArrowRight, Share2 } from 'lucide-react'
 import { serializeLexical } from '@/components/lexical/serialize-lexical'
+import type { Post, Category, Author, Media } from '@/payload-types'
 
-type Post = {
-  id: string
-  title: string
-  slug: string
-  excerpt: string
-  status: string
-  isFeatured?: boolean
-  readTime?: number
-  publishedDate?: string
-  coverImage?: {
-    url: string
-    alt?: string
-  }
-  category?: {
-    id: string
-    name: string
-  } | string
-  authors?: Array<{
-    author?: {
-      id: string
-      name: string
-      role?: string
-      avatar?: {
-        url: string
-      }
-    }
-    role?: string
-  }>
-  content?: any
-  tags?: Array<{ tag: string }>
+type PopulatedPost = Post & {
+  coverImage: Media
+  category: Category
+  authors: { author: Author; role?: string | null; id?: string | null }[]
 }
 
-async function getPost(slug: string): Promise<Post | null> {
+function getCategoryName(category: Post['category']): string {
+  return typeof category === 'object' && category ? category.name : 'Uncategorized'
+}
+
+async function getPost(slug: string): Promise<PopulatedPost | null> {
   const payload = await getPayload({ config })
   const posts = await payload.find({
     collection: 'posts',
@@ -59,10 +38,10 @@ async function getPost(slug: string): Promise<Post | null> {
     return null
   }
 
-  return posts.docs[0] as Post
+  return posts.docs[0] as PopulatedPost
 }
 
-async function getRelatedPosts(categoryId: string, currentPostId: string): Promise<Post[]> {
+async function getRelatedPosts(categoryId: number, currentPostId: number): Promise<PopulatedPost[]> {
   const payload = await getPayload({ config })
   const posts = await payload.find({
     collection: 'posts',
@@ -77,7 +56,7 @@ async function getRelatedPosts(categoryId: string, currentPostId: string): Promi
     limit: 3,
     sort: '-publishedDate',
   })
-  return posts.docs as Post[]
+  return posts.docs as PopulatedPost[]
 }
 
 export default async function MagazinePage({
@@ -93,7 +72,7 @@ export default async function MagazinePage({
   }
 
   const relatedPosts = await getRelatedPosts(
-    typeof post.category === 'object' && post.category ? post.category.id : String(post.category),
+    typeof post.category === 'object' ? post.category.id : post.category,
     post.id
   )
 
@@ -123,7 +102,7 @@ export default async function MagazinePage({
             variant="secondary"
             className="w-fit mb-6 bg-gold/20 text-gold-dark"
           >
-            {post.category?.name || 'Uncategorized'}
+            {getCategoryName(post.category)}
           </Badge>
 
           <h1 className="heading-lg mb-6">{post.title}</h1>
@@ -237,7 +216,7 @@ export default async function MagazinePage({
                       variant="secondary"
                       className="w-fit mb-3 bg-gold/20 text-gold-dark text-xs"
                     >
-                      {relatedPost.category?.name || 'Uncategorized'}
+                      {getCategoryName(relatedPost.category)}
                     </Badge>
                     <h3 className="font-medium text-lg mb-3 line-clamp-2">
                       {relatedPost.title}

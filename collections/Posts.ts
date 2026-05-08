@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig, Where } from 'payload'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -18,9 +18,9 @@ export const Posts: CollectionConfig = {
     maxPerDoc: 50,
   },
   access: {
-    read: ({ req }) => {
+    read: (({ req }) => {
       if (req.user) return true
-      return {
+      const where: Where = {
         or: [
           {
             status: {
@@ -34,7 +34,8 @@ export const Posts: CollectionConfig = {
           },
         ],
       }
-    },
+      return where
+    }) satisfies Access,
     create: () => true,
     update: () => true,
     delete: () => true,

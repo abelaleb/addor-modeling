@@ -6,29 +6,15 @@ import { Button } from '@/components/ui/button'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import type { Post, Category, Media } from '@/payload-types'
 
-type Post = {
-  id: string
-  title: string
-  slug: string
-  excerpt: string
-  status: string
-  isFeatured?: boolean
-  readTime?: number
-  publishedDate?: string
-  coverImage?: {
-    url: string
-    alt?: string
-  }
-  category?: {
-    id: string
-    name: string
-  }
+type PopulatedPost = Post & {
+  coverImage: Media
+  category: Category
 }
 
-type Category = {
-  id: string
-  name: string
+function getCategoryName(category: Post['category']): string {
+  return typeof category === 'object' && category ? category.name : 'Uncategorized'
 }
 
 async function getPosts() {
@@ -44,7 +30,7 @@ async function getPosts() {
     depth: 2,
     limit: 100,
   })
-  return posts as { docs: Post[] }
+  return posts.docs as PopulatedPost[]
 }
 
 async function getCategories() {
@@ -59,12 +45,12 @@ async function getCategories() {
     sort: 'name',
     limit: 100,
   })
-  return categories as { docs: Category[] }
+  return categories.docs as Category[]
 }
 
 export default async function Magazine() {
-  const { docs: posts } = await getPosts()
-  const { docs: categories } = await getCategories()
+  const posts = await getPosts()
+  const categories = await getCategories()
 
   const featuredPost = posts.find((p) => p.isFeatured) || posts[0]
   const regularPosts = posts.filter((p) => p.id !== featuredPost?.id)
@@ -111,7 +97,7 @@ export default async function Magazine() {
                     variant="secondary"
                     className="w-fit mb-4 bg-gold/20 text-gold-dark"
                   >
-                    {featuredPost.category?.name || 'Uncategorized'}
+                    {getCategoryName(featuredPost.category)}
                   </Badge>
                   <h3 className="heading-md mb-4">{featuredPost.title}</h3>
                   <p className="body-lg text-muted-foreground mb-6">
@@ -199,7 +185,7 @@ export default async function Magazine() {
                       variant="secondary"
                       className="w-fit mb-3 bg-gold/20 text-gold-dark text-xs"
                     >
-                      {article.category?.name || 'Uncategorized'}
+                      {getCategoryName(article.category)}
                     </Badge>
                     <h3 className="font-medium text-lg mb-3 line-clamp-2">
                       {article.title}
